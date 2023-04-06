@@ -5,22 +5,35 @@ $fname_error = $email_error = "";
 $display_form = True;//turn form on
 if(isset($_POST['SubmitButton'])){ //check if form was submitted
   $display_form = False;//if submit turn form off
-  echo "<h1>De ingevulde gegevens zijn:</h1><br>";
+  echo "<h1>Your info is:</h1><br>";
   $fname_input = $_POST['fname']; //get input text
-  if(empty($fname_input)){
-    echo "Input your name. <br>";
+  if (!preg_match("/^[a-zA-Z-' ]*$/",$fname_input)) {
+    $fname_error = "Only letters and white space allowed <br>";
+    echo $fname_error;
   }else{
     $fname_message = "Your name is: ".$fname_input."<br>";
     echo $fname_message;
-  }
+}
   
 
   $email_input = $_POST['email']; //get input text
-  $email_message = "Your email is: ".$email_input."<br>";
+  if (!filter_var($email_input, FILTER_VALIDATE_EMAIL)) {
+    $email_error = "Invalid email format <br>";
+    echo $email_error;
+  }else{
+    $email_message = "Your email is: ".$email_input."<br>";
+    echo $email_message;
+}
+?>
+  <html>
+    <body>
+    <form>
+        <input type="button" value="Go back!" onclick="history.back()">
+    </form>
+  </body>
+  </html>
+<?php 
 
-  
-//   echo $fname_message;
-  echo $email_message;
 }    
 if ($display_form){
     ?>
